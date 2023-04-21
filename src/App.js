@@ -1,98 +1,73 @@
-import React, { Component } from "react"
-import BrugerStacker from "./components/BurgerStacker"
-import BurgerPane from "./components/BurgerPane"
-import IngredientList from "./components/IngredientList"
+import "./App.css";
+import IngredientList from "./components/IngredientList";
+import BurgerPane from "./components/BurgerPane";
+import { useState } from "react";
 
 const ingredientsArr = [
-  { name: "Kaiser Bun", color: "saddlebrown" },
-  { name: "Sesame Bun", color: "sandybrown" },
-  { name: "Gluten Free Bun", color: "peru" },
-  { name: "Lettuce Wrap", color: "olivedrab" },
-  { name: "Beef Patty", color: "#3F250B" },
-  { name: "Soy Patty", color: "#3F250B" },
-  { name: "Black Bean Patty", color: "#3F250B" },
-  { name: "Chicken Patty", color: "burlywood" },
-  { name: "Lettuce", color: "lawngreen" },
-  { name: "Tomato", color: "tomato" },
-  { name: "Beef Bacon", color: "maroon" },
-  { name: "Onion", color: "lightyellow" },
+    { name: "Kaiser Bun", color: "saddlebrown" },
+    { name: "Sesame Bun", color: "sandybrown" },
+    { name: "Gluten Free Bun", color: "peru" },
+    { name: "Lettuce Wrap", color: "olivedrab" },
+    { name: "Beef Patty", color: "#3F250B" },
+    { name: "Soy Patty", color: "#3F250B" },
+    { name: "Black Bean Patty", color: "#3F250B" },
+    { name: "Chicken Patty", color: "burlywood" },
+    { name: "Lettuce", color: "lawngreen" },
+    { name: "Tomato", color: "tomato" },
+    { name: "Bacon", color: "maroon" },
+    { name: "Onion", color: "lightyellow" },
 ];
 
+export default function App() {
+    const [ingredients, setIngredients] = useState(ingredientsArr);
+    const [stack, setStack] = useState([]);
+    const [input, setInput] = useState("");
 
-export default class App extends Component {
-  state = {
-    stack: [],
-    ingredList: [...ingredientsArr],
-    input: ""
-  }
+    const handleAddToStack = (newIngredient) => {
+        setStack([newIngredient, ...stack]);
+    };
 
-  handleAddToStack = (e) => {
-    console.log("add to stack", e.target.innerText, e.target.style.backgroundColor)
-    const newStackIngredient = {
-      name: e.target.innerText,
-      color: e.target.style.backgroundColor
-    }
-    this.setState(prevState => {
-      const stack = [...prevState.stack,
-      newStackIngredient]
-      return{stack}
-    })
-  }
+    const handleClearStack = () => {
+        setStack([]);
+    };
 
-handleClearStack = () => {
-  this.setState({
-    stack: []
-  })
-}
+    const handleRemoveOne = () => {
+        let index = stack.length - 1;
+        console.log("remove =>", stack[index]);
+        setStack(stack.filter((item, i) => i !== index));
+    };
 
-handleRemoveOne = () => {
-  //what if stack.lenght == 0?
-  //get index of final element on the stack
-  let start = this.state.stack.length - 1
-  console.log("remove =>", this.state.stack[index])
-  this.setState({
-    stack: this.state.stack.filter((item, i) => {
-      return i !== index
-    })
-  })
-}
+    const handleAddOne = (e) => {
+        e.preventDefault();
+        console.log(ingredients, e.target[0].value);
+        const ingredToAdd = {
+            name: e.target[0].value,
+            color: "#FFFFFF",
+        };
+        console.log("new =>", ingredToAdd);
+        setIngredients([...ingredients, ingredToAdd]);
+        setInput("");
+    };
 
-handleAddOne = () => {
-  e.preventDefault()
-  console.log(this.state.ingredList, e.target)
-  const ingredToAdd = {
-    name: e.target.value,
-    color: "#FFFFFF"
-    }
-    this.setState({
-      input:"",
-      ingredList: [...this.state.ingredList, ingredToAdd]
-    })
-}
+    const handleChange = (e) => {
+        setInput(e.target.value);
+    };
 
-handleChange =(e) => {
-  this.setState({
-    input: e.target.value
-  })
-}
-
-  render() {
     return (
-      <div>
-      <h1>Burger stacker</h1>
-      <IngredientList 
-        items={ingredientsArr}
-        handleAddToStack={this.handleAddToStack}
-        handleAddOne={this.handleAddOne}
-        handleChange={this.handleChange}
-        input={this.state.input}
-      />
-      <BurgerPane 
-      stack={this.state.stack}
-      handleClearStack={this.handleClearStack}
-      handleRemoveOne={this.handleRemoveOne}
-      />
-    </div>
-    )
-  }
-  }
+        <>
+            <h1>Burger Stacker</h1>
+            <IngredientList
+                items={ingredients}
+                handleAddToStack={handleAddToStack}
+                handleAddOne={handleAddOne}
+                input={input}
+                handleChange={handleChange}
+            />
+            <BurgerPane
+                stack={stack}
+                handleClearStack={handleClearStack}
+                handleRemoveOne={handleRemoveOne}
+            />
+        </>
+    );
+}

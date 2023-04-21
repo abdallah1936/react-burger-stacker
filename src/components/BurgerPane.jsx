@@ -1,26 +1,15 @@
-import { Component } from "react";
-import BurgerStacker from "./BurgerStacker";
+import React from 'react';
+import BurgerStack from './BurgerStacker';
 
-export default class BurgerPane extends Component {
-  render() {
-    return(
-      <>
-      <h2>Burger Pane</h2>
-      <button
-        onClick={this.props.handleClearStack}
-      >clear All</button>
+const BurgerPane = ({ handleClearStack, handleRemoveOne, stack }) => {
+    return (
+        <>
+            <h2>BurgerPane</h2>
+            <button onClick={handleClearStack}>Clear All</button>
+            <button onClick={handleRemoveOne}>Clear One</button>
+            <BurgerStack stack={stack} />
+        </>
+    );
+};
 
-      <button
-      onClick={this.props.handleRemoveOne}
-      >
-
-
-      </button>
-
-      <BurgerStacker 
-      stack= {this.props.stack}
-      />
-      </>
-    )
-  }
-}
+export default BurgerPane;

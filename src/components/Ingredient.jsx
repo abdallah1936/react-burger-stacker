@@ -1,16 +1,18 @@
-import { Component } from "react";
+import React from 'react';
 
-export default class Ingredient extends Component {
-  render() {
-    return(
-      <>
-      <p
-      omnClick={this.props.handleAddToStack}
-        style={{
-          backgroundcolor: this.props.item.color
-        }}
-      >{this.props.item}</p>
-      </>
-    )
-  }
-}
+const Ingredient = ({ item, handleAddToStack }) => {
+    return (
+        <>
+            <p
+                onClick={() => handleAddToStack(item)}
+                style={{
+                    backgroundColor: item.color,
+                }}
+            >
+                {item.name}
+            </p>
+        </>
+    );
+};
+
+export default Ingredient;
